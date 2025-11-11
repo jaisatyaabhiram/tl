@@ -1,0 +1,168 @@
+10. a) Write unit tests for UI components. 
+ 
+How can you ensure that your app continues to work as you add more features or change 
+existing functionality? By writing tests. 
+ Unit tests are handy for verifying the behavior of a single function, method, or class. 
+The test package provides the core framework for writing unit tests, and 
+the flutter_test package provides additional utilities for testing widgets. 
+ This experiment demonstrates the core features provided by the test package using the 
+following steps: 
+1. Add the test or flutter_test dependency. 
+2. Create a test file. 
+3. Create a class to test. 
+4. Write a test for our class. 
+5. Combine multiple tests in a group. 
+6. Run the tests. 
+1. Add the test dependency 
+The test package provides the core functionality for writing tests in Dart. This is the best 
+approach when writing packages consumed by web, server, and Flutter apps. 
+• Open your project in Android Studio. 
+• At the bottom of the IDE, click the Terminal tab (next to Run, Debug, Logcat). 
+• To add the test package as a dev dependency, run flutter pub add: 
+Type this command and press Enter: 
+flutter pub add dev:test 
+• Android Studio will update your pubspec.yaml automatically. You don’t need to edit 
+manually. 
+• After running, check pubspec.yaml and you’ll see under dev_dependencies: something 
+like: 
+ 
+• Run the Pub get. 
+2. Create a test file 
+In this example, create two files: counter.dart and counter_test.dart. 
+The counter.dart file contains a class that you want to test and resides in the lib folder. 
+The counter_test.dart file contains the tests themselves and lives inside the test folder. 
+In general, test files should reside inside a test folder located at the root of your Flutter 
+application or package. Test files should always end with _test.dart, this is the convention used 
+by the test runner when searching for tests. 
+When you're finished, the folder structure should look like this: 
+ 
+3. Create a class to test 
+Next, you need a "unit" to test. Remember: "unit" is another name for a function, method, or 
+class. For this example, create a Counter class inside the lib/counter.dart file. It is responsible 
+for incrementing and decrementing a value starting at 0. 
+class Counter { 
+  int value = 0;      // A variable that starts with value 0 
+ 
+  void increment() => value++;    // Increases the value by 1 
+  void decrement() => value--;    // Decreases the value by 1 
+} 
+4. Write a test for our class 
+Inside the counter_test.dart file, write the first unit test. Tests are defined using the top
+level test function, and you can check if the results are correct by using the top
+level expect function. Both of these functions come from the test package. 
+// Import the test package and Counter class 
+import 'package:experiment10/counter.dart'; 
+import 'package:test/test.dart'; 
+ 
+void main() { 
+  test('Counter value should be incremented', () { 
+    final counter = Counter();  // Step 1: Create a Counter object 
+    counter.increment();        // Step 2: Call increment() 
+    expect(counter.value, 1);   // Step 3: Verify that value == 1 
+  }); 
+} 
+5. Combine multiple tests in a group 
+If you want to run a series of related tests, use the flutter_test package group function to 
+categorize the tests. Once put into a group, you can call flutter test on all tests in that group 
+with one command. 
+import 'package:counter_app/counter.dart'; 
+import 'package:test/test.dart'; 
+ 
+void main() { 
+  group('Test start, increment, decrement', () { 
+    test('value should start at 0', () { 
+      expect(Counter().value, 0); 
+    }); 
+    test('value should be incremented', () { 
+      final counter = Counter(); 
+      counter.increment(); 
+      expect(counter.value, 1); 
+    }); 
+    test('value should be decremented', () { 
+      final counter = Counter(); 
+      counter.decrement(); 
+      expect(counter.value, -1); 
+    }); 
+  }); 
+} 
+6. Run the tests 
+You have written a Counter class (inside lib/counter.dart) and a test file (test/counter_test.dart). 
+Now you need to execute these tests to verify that everything works. 
+The Flutter plugins for IntelliJ and terminal support running tests. This is often the best option 
+while writing tests because it provides the fastest feedback loop as well as the ability to set 
+breakpoints. 
+Option 1: Run from Android Studio (IntelliJ) 
+1. Open the file: test/counter_test.dart. 
+2. Right-click anywhere inside the editor. 
+3. Select Run 'tests in counter_test.dart'. 
+4. The test results will appear at the bottom in the Run tab. 
+• Passed tests show with a green check. 
+• Failed tests show with a red cross. 
+Option 2: Run from Terminal 
+Open the terminal inside Android Studio and type: 
+flutter test test/counter_test.dart 
+This will run all the tests inside that file. 
+If you want to run only the group we created in Step 5, use: 
+flutter test --plain-name "Test start, increment, decrement" 
+After running, you should see output like this: 
+00:00 +3: All tests passed! 
+This means your 3 tests (start, increment, decrement) worked correctly. 
+ 
+10. b) Use Flutter's debugging tools to identify and fix issues. 
+ Debugging is the process of finding and fixing errors or bugs in code. Flutter provides 
+a set of integrated debugging tools that make it easier to track UI problems, logic errors, and 
+performance issues in real time. 
+Some of the key debugging tools in Flutter are: 
+1. Debug Console (Run Window): 
+Displays logs, exceptions, and print statements from your app. It helps you understand what 
+happens during execution. 
+2. Hot Reload / Hot Restart: 
+• Hot Reload quickly updates changes in the code without restarting the app. 
+• Hot Restart reloads the whole app, resetting its state. Both features speed up the 
+debugging process. 
+3. Flutter Inspector: 
+A powerful tool (found in Android Studio or VS Code) that lets you: 
+• Visually inspect widget trees. 
+• Highlight UI elements. 
+• Check widget properties and constraints. 
+• Debug layout issues (for example, overflowing widgets). 
+4. Breakpoints and Step Debugging: 
+Breakpoints allow pausing execution at specific lines. Using Step Over, Step Into, and Step 
+Out options, you can trace program logic line by line. 
+5. DevTools (Performance Tools): 
+• Used for analyzing app performance and memory usage. 
+• Helps detect frame rendering issues and jank. 
+Procedure: 
+1. Open your Flutter project in Android Studio. 
+2. Go to the Run menu → select Debug 'main.dart'. 
+3. Observe the Debug Console for any logs or exceptions. 
+4. Open Flutter Inspector (from the right panel) → click on any widget to inspect its 
+properties. 
+5. Add a breakpoint in your Dart file (e.g., inside a button’s onPressed() function). 
+6. Run the app in Debug Mode. When execution pauses at the breakpoint, use Step Over 
+or Step Into to trace the flow. 
+7. Fix the identified issues by modifying the code, then use Hot Reload to view changes 
+instantly. 
+Example Demonstration: 
+// Example: Debugging a simple counter issue 
+class Counter { 
+  int value = 0; 
+  void increment() { 
+    value++; // Set a breakpoint here 
+    print("Counter incremented to $value"); 
+  } 
+} 
+If the value does not update correctly, you can: 
+• Check print outputs in the console. 
+• Inspect the widget displaying the value. 
+• Verify state management or logic using the debugger. 
+Output: 
+• Debug console shows live log messages (Counter incremented to 1). 
+• Flutter Inspector highlights the widget hierarchy. 
+• Breakpoint pauses the app at the increment line for inspection. 
+Result: 
+The debugging tools in Flutter were successfully used to identify logical and UI issues. 
+Breakpoints, Inspector, and Hot Reload were demonstrated effectively to trace and fix 
+problems in the application. 
+ 
+ 
